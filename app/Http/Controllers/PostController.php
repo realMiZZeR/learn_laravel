@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -16,51 +17,57 @@ class PostController extends Controller
 
         $posts = Post::all();
 
-        return view('posts', compact('posts'));
+        return view('post.index', compact('posts'));
 
         // dd($posts);
     }
 
     public function create()
     {
-        $postsArr = [
-            [
-                'title' => 'title',
-                'post_content' => 'content',
-                'image' => 'image.png',
-                'likes' => 20,
-                'is_published' => 1
-            ],
-            [
-                'title' => 'another title',
-                'post_content' => 'another content',
-                'image' => 'image.png',
-                'likes' => 50,
-                'is_published' => 1
-            ],
-        ];
-
-        foreach($postsArr as $post)
-        {
-            Post::create($post);
-        }
-
-        dd('created');
+        return view('post.create');
     }
 
-    public function update()
+    public function store(Request $request)
     {
-        $post = Post::find(2);
-
-        $post->update([
-            'title' => 'updated another title',
-            'content' => 'updated another content',
-            'image' => 'image.png',
-            'likes' => 35,
-            'is_published' => 1
+        $data = request()->validate([
+            'title' => 'string|required',
+            'content' => 'string',
+            'image' => 'string',
         ]);
 
-        dd('updated');
+        Post::create($data);
+
+        return redirect()->route('post.index');
+    }
+
+    public function show(Post $post)
+    {
+        // $post = Post::findOrFail($id);
+
+        return view('post.show', compact('post'));
+    }
+
+    public function edit(Post $post)
+    {
+        return view('post.edit', compact('post'));
+    }
+
+    public function update(Post $post)
+    {
+        $data = request()->validate([
+            'title' => 'string',
+            'content' => 'string',
+            'image' => 'string',
+        ]);
+
+        $post->update($data);
+        return redirect()->route('post.show', $post->id);
+    }
+
+    public function destroy(Post $post)
+    {
+        $post->delete();
+        return redirect()->route('post.index');
     }
 
     public function delete()

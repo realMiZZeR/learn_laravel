@@ -18,20 +18,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// views
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// -------------------------------
 Route::get('/login', function () {
-
+  return view('auth.login');
 })->name('login');
 Route::get('/register', function () {
-
+  return view('auth.register');
 })->name('register');
+// -------------------------------
+
+// views
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/contacts', [ContactsController::class, 'index'])->name('contact.index');
 Route::get('/about', [AboutController::class, 'index'])->name('about.index');
-Route::get('/posts', [PostController::class, 'index'])->name('post.index');
 
-// CRUD
-Route::get('/posts/create', [PostController::class, 'create']);
+// posts
+Route::get('/posts', [PostController::class, 'index'])->name('post.index');
+Route::post('/posts', [PostController::class, 'store'])->name('post.store');
+Route::get('/posts/create', [PostController::class, 'create'])->name('post.create');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('post.show');
+Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('post.edit');
+Route::patch('/posts/{post}', [PostController::class, 'update'])->name('post.update');
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('post.destroy');
+
+
 Route::get('/posts/update', [PostController::class, 'update']);
 Route::get('/posts/delete', [PostController::class, 'delete']);
 Route::get('/posts/restore', [PostController::class, 'restore']);

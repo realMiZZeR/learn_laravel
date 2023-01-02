@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,11 +16,14 @@ class PostController extends Controller
         dump() & dd() - laravel
         */
 
-        $posts = Post::all();
+        $category = Category::find(1);
+        $post = Post::find(1);
+
+        // $posts = Post::where('category_id', $category->id)->get();
+        
+        dd($post->category);
 
         return view('post.index', compact('posts'));
-
-        // dd($posts);
     }
 
     public function create()

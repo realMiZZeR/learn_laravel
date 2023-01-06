@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -15,13 +16,14 @@ class PostController extends Controller
         var_dump() - php
         dump() & dd() - laravel
         */
-
-        $category = Category::find(1);
         $post = Post::find(1);
+        $tag = Tag::find(1);
+
+        $posts = Post::all();
 
         // $posts = Post::where('category_id', $category->id)->get();
         
-        dd($post->category);
+        dd($tag->posts);
 
         return view('post.index', compact('posts'));
     }
